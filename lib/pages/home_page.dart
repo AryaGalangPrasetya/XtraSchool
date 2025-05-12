@@ -198,29 +198,117 @@ class HomePage extends StatelessWidget {
                           ),
                         ),
 
-                        // INFORMASI EKSTRAKULIKULER
+                        // INFORMASI EKSTRAKULIKULER DENGAN GAMBAR
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text("Informasi Extrakulikuler",
+                            children: [
+                              const Text("Informasi Extrakulikuler",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,
                                       color: Color(0xFF333333))),
-                              SizedBox(height: 12),
-                              Text("Akademik",
-                                  style: TextStyle(
-                                      fontSize: 16, color: Color(0xFF333333))),
-                              SizedBox(height: 8),
-                              SizedBox(height: 1),
-                              SizedBox(height: 24),
-                              Text("Non Akademik",
-                                  style: TextStyle(
-                                      fontSize: 16, color: Color(0xFF333333))),
-                              SizedBox(height: 8),
-                              SizedBox(height: 1),
+                              const SizedBox(height: 16),
+                              // Akademik dengan gambar
+                              Card(
+                                elevation: 3,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Column(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                                      child: Image.asset(
+                                        'assets/images/akademik.png',
+                                        width: double.infinity,
+                                        height: 120,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(12),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          const Text("Akademik",
+                                              style: TextStyle(
+                                                  fontSize: 16, 
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Color(0xFF333333))),
+                                          const SizedBox(height: 8),
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                                            decoration: BoxDecoration(
+                                              color: brightBlue.withOpacity(0.1),
+                                              borderRadius: BorderRadius.circular(8),
+                                            ),
+                                            child: const Text(
+                                              "COMPETITION\nKATEGORI : SMA & SPM",
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Color(0xFF333333),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              const SizedBox(height: 16),
+
+                              // Non Akademik dengan gambar
+                              Card(
+                                elevation: 3,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Column(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                                      child: Image.asset(
+                                        'assets/images/nonakademik.png',
+                                        width: double.infinity,
+                                        height: 120,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(12),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          const Text("Non Akademik",
+                                              style: TextStyle(
+                                                  fontSize: 16, 
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Color(0xFF333333))),
+                                          const SizedBox(height: 8),
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                                            decoration: BoxDecoration(
+                                              color: brightBlue.withOpacity(0.1),
+                                              borderRadius: BorderRadius.circular(8),
+                                            ),
+                                            child: const Text(
+                                              "TUTUAL COMPETITION\nKATEGORI : SMA & SPM",
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Color(0xFF333333),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -243,66 +331,31 @@ class HomePage extends StatelessWidget {
                 color: deepNavyBlue,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withAlpha(51),
+                    color: Colors.black.withOpacity(0.2),
                     spreadRadius: 1,
                     blurRadius: 3,
-                    offset: Offset(0, -1),
+                    offset: const Offset(0, -1),
                   ),
                 ],
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  // Home Button
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        icon: const Icon(
-                          Icons.home,
-                          color: Colors.white,
-                          size: 24,
-                        ),
-                        onPressed: () {},
-                        padding: EdgeInsets.zero,
-                        constraints: BoxConstraints(),
-                      ),
-                      Text(
-                        "",
-                        style: TextStyle(color: Colors.white, fontSize: 12),
-                      ),
-                    ],
+                  IconButton(
+                    icon: const Icon(Icons.home, color: Colors.white, size: 28),
+                    onPressed: () {},
                   ),
-                  
-                  // Empty space for FAB
-                  SizedBox(width: 24),
-                  
-                  // Profile Button
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        icon: const Icon(
-                          Icons.person,
-                          color: Colors.white,
-                          size: 24,
-                        ),
-                        onPressed: () {},
-                        padding: EdgeInsets.zero,
-                        constraints: BoxConstraints(),
-                      ),
-                      Text(
-                        "",
-                        style: TextStyle(color: Colors.white, fontSize: 12),
-                      ),
-                    ],
+                  const SizedBox(width: 60),
+                  IconButton(
+                    icon: const Icon(Icons.person, color: Colors.white, size: 28),
+                    onPressed: () {},
                   ),
                 ],
               ),
             ),
           ),
-          
-          // Floating Action Button
+
+          // FLOATING ACTION BUTTON
           Positioned(
             bottom: 30,
             left: 0,
@@ -316,10 +369,10 @@ class HomePage extends StatelessWidget {
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withAlpha(51),
+                      color: Colors.black.withOpacity(0.2),
                       spreadRadius: 1,
                       blurRadius: 4,
-                      offset: Offset(0, 2),
+                      offset: const Offset(0, 2),
                     ),
                   ],
                 ),
@@ -327,7 +380,7 @@ class HomePage extends StatelessWidget {
                   icon: Icon(
                     Icons.calendar_today,
                     color: deepNavyBlue,
-                    size: 24,
+                    size: 28,
                   ),
                   onPressed: () {
                     Navigator.push(
