@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'absensi_page.dart';  // Pastikan AbsensiPage diimpor dengan benar
+import 'absensi_page.dart';
 
 class HomePage extends StatelessWidget {
   final List<Map<String, String>> jadwalHariIni = [
@@ -7,26 +7,29 @@ class HomePage extends StatelessWidget {
     {'jam': '2:00pm', 'judul': 'Basket', 'lokasi': 'Lapangan Cobra'},
   ];
 
+  HomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
+    final Color deepNavyBlue = Color(0xFF00447C);
+    final Color brightBlue = Color(0xFF2962FF);
+
     return Scaffold(
       backgroundColor: Colors.white,
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 1,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
-        ],
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
+      body: Stack(
+        children: [
+          Column(
             children: [
               // HEADER
               Container(
-                color: Colors.blue.shade900,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: const EdgeInsets.only(left: 16, right: 16, top: 40, bottom: 12),
+                decoration: BoxDecoration(
+                  color: deepNavyBlue,
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(30),
+                    bottomRight: Radius.circular(30),
+                  ),
+                ),
                 child: Column(
                   children: [
                     Row(
@@ -35,23 +38,23 @@ class HomePage extends StatelessWidget {
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 20)),
+                                fontSize: 22)),
                         const Spacer(),
-                        const Icon(Icons.mail_outline, color: Colors.white),
+                        const Icon(Icons.mail_outline, color: Colors.white, size: 24),
                       ],
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 16),
                     Container(
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(25),
+                        borderRadius: BorderRadius.circular(30),
                       ),
                       child: const TextField(
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.search),
                           hintText: 'Cari...',
                           border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(vertical: 12),
+                          contentPadding: EdgeInsets.symmetric(vertical: 14),
                         ),
                       ),
                     ),
@@ -59,120 +62,289 @@ class HomePage extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 16),
+              // SCROLLABLE CONTENT
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 70),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 16),
 
-              // MENU ICONS
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    _buildMenuIcon(Icons.calendar_month, "Jadwal", () {}),
-                    _buildMenuIcon(Icons.assignment, "Pendaftaran", () {}),
-                    _buildMenuIcon(Icons.emoji_events, "Prestasi", () {}),
-                    _buildMenuIcon(Icons.check_circle, "Kehadiran", () {
-                      // Navigasi ke halaman AbsensiPage
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => AbsensiPage()),
-                      );
-                    }),
-                  ],
-                ),
-              ),
+                        // MENU ICONS
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              _buildMenuIcon(Icons.calendar_month, "Jadwal", brightBlue, () {}),
+                              _buildMenuIcon(Icons.assignment, "Pendaftaran", brightBlue, () {}),
+                              _buildMenuIcon(Icons.emoji_events, "Prestasi", brightBlue, () {}),
+                              _buildMenuIcon(Icons.check_circle, "Kehadiran", brightBlue, () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const AbsensiPage()),
+                                );
+                              }),
+                            ],
+                          ),
+                        ),
 
-              const SizedBox(height: 24),
+                        const SizedBox(height: 24),
 
-              // ACARA HARI INI
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text("Acara Hari ini", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                    const SizedBox(height: 8),
-                    Container(
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
-                      decoration: BoxDecoration(
-                        color: Colors.indigo.shade400,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: const Text("17 Agustus, 2024", style: TextStyle(color: Colors.white)),
+                        // ACARA HARI INI
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text("Acara Hari ini",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                      color: Color(0xFF333333))),
+                              const SizedBox(height: 12),
+                              Container(
+                                width: double.infinity,
+                                alignment: Alignment.center,
+                                padding: const EdgeInsets.symmetric(vertical: 12),
+                                decoration: BoxDecoration(
+                                  color: brightBlue,
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                child: const Text("17 Agustus, 2024",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 16)),
+                              ),
+                              const SizedBox(height: 16),
+
+                              ...jadwalHariIni.asMap().entries.map((entry) {
+                                final jadwal = entry.value;
+                                return Container(
+                                  margin: const EdgeInsets.only(bottom: 12),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Colors.black12,
+                                        blurRadius: 4,
+                                        offset: Offset(0, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        width: 100,
+                                        height: 80,
+                                        decoration: BoxDecoration(
+                                          color: brightBlue,
+                                          borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(10),
+                                            bottomLeft: Radius.circular(10),
+                                          ),
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              jadwal['jam']!,
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16),
+                                            ),
+                                            const SizedBox(height: 4),
+                                            const Text(
+                                              "i-Lecture",
+                                              style: TextStyle(
+                                                  color: Colors.white, fontSize: 12),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 16, horizontal: 16),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(jadwal['judul']!,
+                                                  style: const TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: 18,
+                                                      color: Colors.black)),
+                                              const SizedBox(height: 4),
+                                              Text(jadwal['lokasi']!,
+                                                  style: const TextStyle(
+                                                      color: Colors.black87,
+                                                      fontSize: 14)),
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                );
+                              }),
+                            ],
+                          ),
+                        ),
+
+                        // INFORMASI EKSTRAKULIKULER
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const [
+                              Text("Informasi Extrakulikuler",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                      color: Color(0xFF333333))),
+                              SizedBox(height: 12),
+                              Text("Akademik",
+                                  style: TextStyle(
+                                      fontSize: 16, color: Color(0xFF333333))),
+                              SizedBox(height: 8),
+                              SizedBox(height: 1),
+                              SizedBox(height: 24),
+                              Text("Non Akademik",
+                                  style: TextStyle(
+                                      fontSize: 16, color: Color(0xFF333333))),
+                              SizedBox(height: 8),
+                              SizedBox(height: 1),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 12),
-                    ...jadwalHariIni.map((jadwal) {
-                      return Container(
-                        margin: const EdgeInsets.only(bottom: 12),
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade100,
-                          borderRadius: BorderRadius.circular(12),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.3),
-                              blurRadius: 4,
-                              offset: const Offset(2, 4),
-                            ),
-                          ],
-                        ),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 60,
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: Colors.indigo,
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Column(
-                                children: [
-                                  Text(jadwal['jam']!, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                                  const SizedBox(height: 4),
-                                  const Text("i-Lecture", style: TextStyle(color: Colors.white, fontSize: 10)),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(jadwal['judul']!, style: const TextStyle(fontWeight: FontWeight.bold)),
-                                Text(jadwal['lokasi']!),
-                              ],
-                            )
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                  ],
-                ),
-              ),
-
-              // INFORMASI EKSTRAKULIKULER
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text("Informasi Extrakulikuler", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                    const SizedBox(height: 8),
-                    const Text("Akademik"),
-                    _buildBannerImage(),
-                    const SizedBox(height: 12),
-                    const Text("Non Akademik"),
-                    _buildBannerImage(),
-                  ],
+                  ),
                 ),
               ),
             ],
           ),
-        ),
+
+          // NAVIGATION BAR
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              height: 60,
+              decoration: BoxDecoration(
+                color: deepNavyBlue,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withAlpha(51),
+                    spreadRadius: 1,
+                    blurRadius: 3,
+                    offset: Offset(0, -1),
+                  ),
+                ],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  // Home Button
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: const Icon(
+                          Icons.home,
+                          color: Colors.white,
+                          size: 24,
+                        ),
+                        onPressed: () {},
+                        padding: EdgeInsets.zero,
+                        constraints: BoxConstraints(),
+                      ),
+                      Text(
+                        "",
+                        style: TextStyle(color: Colors.white, fontSize: 12),
+                      ),
+                    ],
+                  ),
+                  
+                  // Empty space for FAB
+                  SizedBox(width: 24),
+                  
+                  // Profile Button
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: const Icon(
+                          Icons.person,
+                          color: Colors.white,
+                          size: 24,
+                        ),
+                        onPressed: () {},
+                        padding: EdgeInsets.zero,
+                        constraints: BoxConstraints(),
+                      ),
+                      Text(
+                        "",
+                        style: TextStyle(color: Colors.white, fontSize: 12),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          
+          // Floating Action Button
+          Positioned(
+            bottom: 30,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: Container(
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withAlpha(51),
+                      spreadRadius: 1,
+                      blurRadius: 4,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.calendar_today,
+                    color: deepNavyBlue,
+                    size: 24,
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const AbsensiPage()),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildMenuIcon(IconData icon, String label, VoidCallback onTap) {
+  Widget _buildMenuIcon(IconData icon, String label, Color iconColor, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
       child: Column(
@@ -180,29 +352,15 @@ class HomePage extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: Colors.blue.shade100,
-              shape: BoxShape.circle,
+              color: const Color(0xFFE6EFFF),
+              borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(icon, color: Colors.blue.shade900),
+            child: Icon(icon, color: iconColor, size: 24),
           ),
-          const SizedBox(height: 4),
-          Text(label, style: const TextStyle(fontSize: 12)),
+          const SizedBox(height: 6),
+          Text(label,
+              style: const TextStyle(fontSize: 14, color: Color(0xFF333333))),
         ],
-      ),
-    );
-  }
-
-  Widget _buildBannerImage() {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      height: 100,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        image: const DecorationImage(
-          image: AssetImage('assets/images/banner.jpg'),
-          fit: BoxFit.cover,
-        ),
       ),
     );
   }

@@ -5,7 +5,6 @@ class AbsensiPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Membuat TextEditingController untuk mengontrol TextField
     final TextEditingController namaController = TextEditingController();
     final TextEditingController kelasController = TextEditingController();
     final TextEditingController nisnController = TextEditingController();
@@ -14,16 +13,39 @@ class AbsensiPage extends StatelessWidget {
     final TextEditingController kehadiranController = TextEditingController();
 
     return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 1,
-        onTap: (index) {
-          if (index == 0) Navigator.pop(context); // ke Home
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.white,
+        child: const Icon(Icons.calendar_today, color: Colors.blue),
+        onPressed: () {
+          // Bisa kosong karena sudah di halaman ini
         },
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
-        ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomAppBar(
+        shape: const CircularNotchedRectangle(),
+        color: Colors.blue,
+        notchMargin: 6.0,
+        child: SizedBox(
+          height: 60,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.home, color: Colors.white),
+                onPressed: () {
+                  Navigator.pop(context); // Kembali ke Home
+                },
+              ),
+              const SizedBox(width: 24), // Kosong di tengah
+              IconButton(
+                icon: const Icon(Icons.person, color: Colors.white),
+                onPressed: () {
+                  // Arahkan ke halaman profil, nanti bisa diganti
+                },
+              ),
+            ],
+          ),
+        ),
       ),
       body: SafeArea(
         child: ListView(
@@ -56,11 +78,11 @@ class AbsensiPage extends StatelessWidget {
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: () {
-                // Validasi dan kirim data ke server/database
                 if (_validateFields(namaController, kelasController, nisnController, tanggalController, ekstrakurikulerController, kehadiranController)) {
-                  // Logic untuk menyimpan data absensi
-                  print('Data berhasil dikirim');
-                  // Reset field setelah kirim
+                  // Menggunakan SnackBar untuk memberikan feedback
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Data berhasil dikirim')),
+                  );
                   namaController.clear();
                   kelasController.clear();
                   nisnController.clear();
@@ -68,8 +90,10 @@ class AbsensiPage extends StatelessWidget {
                   ekstrakurikulerController.clear();
                   kehadiranController.clear();
                 } else {
-                  // Tampilkan pesan kesalahan jika ada field yang kosong
-                  print('Harap isi semua data');
+                  // Menampilkan pesan error dengan SnackBar
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Harap isi semua data')),
+                  );
                 }
               },
               style: ElevatedButton.styleFrom(
@@ -105,7 +129,14 @@ class AbsensiPage extends StatelessWidget {
     );
   }
 
-  bool _validateFields(TextEditingController nama, TextEditingController kelas, TextEditingController nisn, TextEditingController tanggal, TextEditingController ekstrakurikuler, TextEditingController kehadiran) {
+  bool _validateFields(
+    TextEditingController nama,
+    TextEditingController kelas,
+    TextEditingController nisn,
+    TextEditingController tanggal,
+    TextEditingController ekstrakurikuler,
+    TextEditingController kehadiran,
+  ) {
     return nama.text.isNotEmpty &&
         kelas.text.isNotEmpty &&
         nisn.text.isNotEmpty &&

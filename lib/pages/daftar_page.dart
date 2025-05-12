@@ -4,13 +4,13 @@ import '../models/ekskul.dart';
 class DaftarPage extends StatefulWidget {
   final Ekskul ekskul;
 
-  DaftarPage({required this.ekskul});
+  const DaftarPage({super.key, required this.ekskul}); // menggunakan super.key
 
   @override
-  _DaftarPageState createState() => _DaftarPageState();
+  DaftarPageState createState() => DaftarPageState();
 }
 
-class _DaftarPageState extends State<DaftarPage> {
+class DaftarPageState extends State<DaftarPage> {
   final _formKey = GlobalKey<FormState>();
   String nama = '';
   String kelas = '';

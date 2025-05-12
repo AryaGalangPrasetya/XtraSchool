@@ -5,7 +5,7 @@ import 'daftar_page.dart';
 class DetailPage extends StatelessWidget {
   final Ekskul ekskul;
 
-  DetailPage({required this.ekskul});
+  const DetailPage({super.key, required this.ekskul});  // Menambahkan const dan super.key
 
   @override
   Widget build(BuildContext context) {

@@ -1,23 +1,5 @@
 import 'package:flutter/material.dart';
-import 'pages/home_page.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'XtraSchool',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: const SplashScreen(),
-    );
-  }
-}
+import 'get_started.dart'; // Ganti dari 'home_page.dart'
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -30,15 +12,14 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _navigateToHome();
-  }
-
-  Future<void> _navigateToHome() async {
-    await Future.delayed(const Duration(seconds: 3));
-    if (!mounted) return;
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) =>  HomePage()),
-    );
+    Future.delayed(const Duration(seconds: 3), () {
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const GetStartedPage()),
+        );
+      }
+    });
   }
 
   @override
@@ -54,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
         ),
         child: Center(
           child: Image.asset(
-            'assets/images/logo.png',
+            'assets/images/logo.png', // pastikan logo ada di path ini
             width: 200,
           ),
         ),
