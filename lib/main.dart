@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'pages/home_page.dart';
+import 'pages/get_started.dart'; // Hanya import ini karena HomePage dipanggil dari get_started.dart
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'XtraSchool',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const SplashScreen(),
+      home: const SplashScreen(), // Awalnya tampil splash screen
     );
   }
 }
@@ -30,14 +30,14 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _navigateToHome();
+    _navigateToGetStarted();
   }
 
-  Future<void> _navigateToHome() async {
+  Future<void> _navigateToGetStarted() async {
     await Future.delayed(const Duration(seconds: 3));
     if (!mounted) return;
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) =>  HomePage()),
+      MaterialPageRoute(builder: (_) => const GetStartedPage()),
     );
   }
 
