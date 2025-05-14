@@ -1,116 +1,195 @@
 import 'package:flutter/material.dart';
 
-class AbsensiPage extends StatelessWidget {
+class AbsensiPage extends StatefulWidget {
   const AbsensiPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final TextEditingController namaController = TextEditingController();
-    final TextEditingController kelasController = TextEditingController();
-    final TextEditingController nisnController = TextEditingController();
-    final TextEditingController tanggalController = TextEditingController();
-    final TextEditingController ekstrakurikulerController = TextEditingController();
-    final TextEditingController kehadiranController = TextEditingController();
+  State<AbsensiPage> createState() => _AbsensiPageState();
+}
 
+class _AbsensiPageState extends State<AbsensiPage> {
+  final TextEditingController namaController = TextEditingController();
+  final TextEditingController kelasController = TextEditingController();
+  final TextEditingController nisnController = TextEditingController();
+  final TextEditingController tanggalController = TextEditingController();
+  final TextEditingController ekstrakurikulerController = TextEditingController();
+  final TextEditingController kehadiranController = TextEditingController();
+
+  String metode = 'manual';
+
+  // Warna untuk navigasi bar
+  Color deepNavyBlue = const Color(0xFF001F54);
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.white,
-        child: const Icon(Icons.calendar_today, color: Colors.blue),
-        onPressed: () {
-          // Bisa kosong karena sudah di halaman ini
-        },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-        shape: const CircularNotchedRectangle(),
-        color: Colors.blue,
-        notchMargin: 6.0,
-        child: SizedBox(
-          height: 60,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                icon: const Icon(Icons.home, color: Colors.white),
-                onPressed: () {
-                  Navigator.pop(context); // Kembali ke Home
-                },
-              ),
-              const SizedBox(width: 24), // Kosong di tengah
-              IconButton(
-                icon: const Icon(Icons.person, color: Colors.white),
-                onPressed: () {
-                  // Arahkan ke halaman profil, nanti bisa diganti
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
-      body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(24),
-          children: [
-            Row(
+      backgroundColor: Colors.white,
+      body: Stack(
+        children: [
+          SafeArea(
+            child: ListView(
+              padding: const EdgeInsets.all(24),
               children: [
-                IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () => Navigator.pop(context),
-                ),
+                const SizedBox(height: 60),
                 const Text(
-                  'Absensi',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  'METODE ABSENSI',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ChoiceChip(
+                      label: const Text('Manual'),
+                      selected: metode == 'manual',
+                      onSelected: (_) => setState(() => metode = 'manual'),
+                    ),
+                    ChoiceChip(
+                      label: const Text('Scan QR Code'),
+                      selected: metode == 'qr',
+                      onSelected: (_) {
+                        setState(() => metode = 'qr');
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Fitur scan QR belum tersedia')),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                if (metode == 'manual') ...[
+                  const Text(
+                    'FORMULIR ABSENSI EKSTRA',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 24),
+                  _buildTextField('Nama Lengkap', namaController),
+                  _buildTextField('Kelas', kelasController),
+                  _buildTextField('NISN', nisnController),
+                  _buildTextField('Tanggal Kegiatan', tanggalController),
+                  _buildTextField('Nama Ekstrakurikuler', ekstrakurikulerController),
+                  _buildTextField('Status Kehadiran', kehadiranController),
+                  const SizedBox(height: 24),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (_validateFields()) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Data berhasil dikirim')),
+                        );
+                        namaController.clear();
+                        kelasController.clear();
+                        nisnController.clear();
+                        tanggalController.clear();
+                        ekstrakurikulerController.clear();
+                        kehadiranController.clear();
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Harap isi semua data')),
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: deepNavyBlue,
+                      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                    child: const Text(
+                      'KIRIM',
+                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                  )
+                ] else ...[
+                  const SizedBox(height: 24),
+                  Center(
+                    child: Column(
+                      children: const [
+                        Icon(Icons.qr_code_scanner, size: 100, color: Colors.grey),
+                        SizedBox(height: 12),
+                        Text(
+                          'Silakan scan QR Code di tempat kegiatan',
+                          style: TextStyle(fontSize: 16),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  )
+                ]
               ],
             ),
-            const SizedBox(height: 16),
-            const Text(
-              'FORMULIR ABSENSI EKSTRA',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+
+          // NAVIGATION BAR (SAMA KAYAK DI HALAMAN HOME)
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              height: 60,
+              decoration: BoxDecoration(
+                color: deepNavyBlue,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    spreadRadius: 1,
+                    blurRadius: 3,
+                    offset: const Offset(0, -1),
+                  ),
+                ],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.home, color: Colors.white, size: 28),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/home'); // Menuju halaman home
+                    },
+                  ),
+                  const SizedBox(width: 60),
+                  IconButton(
+                    icon: const Icon(Icons.person, color: Colors.white, size: 28),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/profil'); // Menuju halaman profil
+                    },
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(height: 24),
-            _buildTextField('Nama Lengkap', namaController),
-            _buildTextField('Kelas', kelasController),
-            _buildTextField('NISN', nisnController),
-            _buildTextField('Tanggal Kegiatan', tanggalController),
-            _buildTextField('Nama Ekstrakurikuler', ekstrakurikulerController),
-            _buildTextField('Status Kehadiran', kehadiranController),
-            const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: () {
-                if (_validateFields(namaController, kelasController, nisnController, tanggalController, ekstrakurikulerController, kehadiranController)) {
-                  // Menggunakan SnackBar untuk memberikan feedback
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Data berhasil dikirim')),
-                  );
-                  namaController.clear();
-                  kelasController.clear();
-                  nisnController.clear();
-                  tanggalController.clear();
-                  ekstrakurikulerController.clear();
-                  kehadiranController.clear();
-                } else {
-                  // Menampilkan pesan error dengan SnackBar
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Harap isi semua data')),
-                  );
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
+          ),
+
+          // FLOATING ACTION BUTTON
+          Positioned(
+            bottom: 30,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: Container(
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      spreadRadius: 1,
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
-                elevation: 4,
+                child: IconButton(
+                  icon: Icon(Icons.calendar_today, color: deepNavyBlue, size: 28),
+                  onPressed: () {
+                    // Sedang di halaman absensi, tidak perlu pindah
+                  },
+                ),
               ),
-              child: const Text(
-                'KIRIM',
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-            )
-          ],
-        ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -129,19 +208,12 @@ class AbsensiPage extends StatelessWidget {
     );
   }
 
-  bool _validateFields(
-    TextEditingController nama,
-    TextEditingController kelas,
-    TextEditingController nisn,
-    TextEditingController tanggal,
-    TextEditingController ekstrakurikuler,
-    TextEditingController kehadiran,
-  ) {
-    return nama.text.isNotEmpty &&
-        kelas.text.isNotEmpty &&
-        nisn.text.isNotEmpty &&
-        tanggal.text.isNotEmpty &&
-        ekstrakurikuler.text.isNotEmpty &&
-        kehadiran.text.isNotEmpty;
+  bool _validateFields() {
+    return namaController.text.isNotEmpty &&
+        kelasController.text.isNotEmpty &&
+        nisnController.text.isNotEmpty &&
+        tanggalController.text.isNotEmpty &&
+        ekstrakurikulerController.text.isNotEmpty &&
+        kehadiranController.text.isNotEmpty;
   }
 }
