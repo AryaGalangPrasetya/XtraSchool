@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'pages/get_started.dart'; // ✅ Pastikan GetStartedPage ada di path ini
+import 'pages/get_started.dart';
+import 'pages/login_page.dart'; // Import your LoginPage
+import 'pages/home_page.dart'; // Import your HomePage
 
 void main() {
   runApp(const MyApp());
@@ -13,8 +15,18 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'XtraSchool',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: const SplashScreen(),
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: Colors.white,
+      ),
+      // Define named routes for better navigation management
+      routes: {
+        '/': (context) => const SplashScreen(),
+        '/get-started': (context) => const GetStartedPage(),
+        '/login': (context) => const LoginPage(),
+        '/home': (context) =>  HomePage(),
+      },
+      initialRoute: '/',
     );
   }
 }
@@ -36,9 +48,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> _navigateToGetStarted() async {
     await Future.delayed(const Duration(seconds: 3));
     if (!mounted) return;
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => const GetStartedPage()),
-    );
+    Navigator.of(context).pushReplacementNamed('/get-started');
   }
 
   @override
