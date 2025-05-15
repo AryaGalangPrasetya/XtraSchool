@@ -36,7 +36,8 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Center(
           child: Image.asset(
             'assets/images/logo.png', // pastikan logo ada di path ini
-            width: 200,
+            width: 500,
+             height: 500,
           ),
         ),
       ),

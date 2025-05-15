@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'pages/get_started.dart'; // Hanya import ini karena HomePage dipanggil dari get_started.dart
+import 'pages/get_started.dart'; // ✅ Pastikan GetStartedPage ada di path ini
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'XtraSchool',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const SplashScreen(), // Awalnya tampil splash screen
+      home: const SplashScreen(),
     );
   }
 }
