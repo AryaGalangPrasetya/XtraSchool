@@ -119,7 +119,7 @@ class HomePage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               _buildFeatureIcon(Icons.calendar_month_rounded, "Jadwal", Color(0xFF4e6cef), () {}),
-                              _buildFeatureIcon(Icons.app_registration, "Pendaftaran", Color(0xFF3f8cff), () {}),
+                              _buildFeatureIcon(Icons.assignment_rounded, "Pendaftaran", Color(0xFF3f8cff), () {}),
                               _buildFeatureIcon(Icons.emoji_events_rounded, "Prestasi", Color(0xFF5e56ff), () {}),
                               _buildFeatureIcon(Icons.check_circle_rounded, "Kehadiran", Color(0xFF3f51b5), () {
                                 Navigator.push(

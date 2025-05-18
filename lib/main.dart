@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'pages/get_started.dart';
 import 'pages/login_page.dart'; // Import your LoginPage
 import 'pages/home_page.dart'; // Import your HomePage
+import 'pages/absensi_page.dart'; // Import your AbsensiPage
+import 'pages/profile_page.dart'; // Import the new ProfilePage
 
 void main() {
   runApp(const MyApp());
@@ -24,7 +26,9 @@ class MyApp extends StatelessWidget {
         '/': (context) => const SplashScreen(),
         '/get-started': (context) => const GetStartedPage(),
         '/login': (context) => const LoginPage(),
-        '/home': (context) =>  HomePage(),
+        '/home': (context) => HomePage(),
+        '/absensi': (context) => const AbsensiPage(),
+        '/profile': (context) => const ProfilePage(),
       },
       initialRoute: '/',
     );
