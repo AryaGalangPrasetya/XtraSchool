@@ -10,6 +10,7 @@ import 'pages/prestasi_page.dart';
 import 'pages/kontak_page.dart'; // ✅ Import halaman kontak
 import 'pages/get_started.dart';
 import 'pages/login_page.dart';
+import 'pages/jadwalpage.dart'; // ✅ Import halaman jadwal baru
 
 import 'components/app_navigation.dart';
 
@@ -35,7 +36,8 @@ class MyApp extends StatelessWidget {
         '/daftar': (context) => const HomeWithNavigation(initialIndex: 1),
         '/absensi': (context) => const HomeWithNavigation(initialIndex: 2),
         '/prestasi': (context) => const HomeWithNavigation(initialIndex: 3),
-        '/kontak': (context) => const HomeWithNavigation(initialIndex: 4), // ✅ Ubah dari /profile
+        '/kontak': (context) => const HomeWithNavigation(initialIndex: 4),
+        '/jadwal': (context) => const JadwalPage(), // ✅ Tambahkan route jadwal
       },
       initialRoute: '/',
     );

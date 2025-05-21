@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class RiwayatPage extends StatefulWidget {
   const RiwayatPage({super.key});
@@ -9,13 +10,14 @@ class RiwayatPage extends StatefulWidget {
 
 class _RiwayatPageState extends State<RiwayatPage> {
   // Data dummy untuk riwayat kegiatan
-  final List<Map<String, dynamic>> _riwayatData = [
+  final List<Map<String, dynamic>> _allRiwayatData = [
     {
       'title': 'Daftar Ekskul Futsal',
       'date': '12 Mar 2025',
       'status': 'approved',
       'icon': Icons.sports_soccer,
       'color': Colors.green,
+      'type': 'ekskul',
     },
     {
       'title': 'Absensi Pada Tanggal',
@@ -23,6 +25,7 @@ class _RiwayatPageState extends State<RiwayatPage> {
       'status': 'present',
       'icon': Icons.check_circle,
       'color': Colors.blue,
+      'type': 'hadir',
     },
     {
       'title': 'Absensi Pada Tanggal',
@@ -30,6 +33,7 @@ class _RiwayatPageState extends State<RiwayatPage> {
       'status': 'absent',
       'icon': Icons.cancel,
       'color': Colors.red,
+      'type': 'absen',
     },
     {
       'title': 'Absensi Pada Tanggal',
@@ -37,6 +41,7 @@ class _RiwayatPageState extends State<RiwayatPage> {
       'status': 'late',
       'icon': Icons.watch_later,
       'color': Colors.orange,
+      'type': 'izin',
     },
     {
       'title': 'Daftar Ekskul Futsal',
@@ -44,6 +49,7 @@ class _RiwayatPageState extends State<RiwayatPage> {
       'status': 'approved',
       'icon': Icons.sports_soccer,
       'color': Colors.green,
+      'type': 'ekskul',
     },
     {
       'title': 'Absensi Pada Tanggal',
@@ -51,17 +57,31 @@ class _RiwayatPageState extends State<RiwayatPage> {
       'status': 'absent',
       'icon': Icons.cancel,
       'color': Colors.red,
+      'type': 'absen',
     },
   ];
+
+  List<Map<String, dynamic>> _filteredRiwayatData = [];
 
   // Filter status for the history items
   final List<String> _filterOptions = ['Semua', 'Hadir', 'Izin', 'Absen', 'Ekskul'];
   String _selectedFilter = 'Semua';
 
   // Theme colors
-  final Color primaryColor = const Color(0xFF0059AA);
+  final Color primaryColor = const Color(0xFF0A0F6A);
   final Color accentColor = const Color(0xFF2962FF);
   final Color backgroundColor = const Color(0xFFF8FAFF);
+
+  @override
+  void initState() {
+    super.initState();
+    _filteredRiwayatData = _allRiwayatData;
+    // Set system UI overlay style
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light,
+    ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +104,7 @@ class _RiwayatPageState extends State<RiwayatPage> {
 
   Widget _buildHeader() {
     return Container(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+      padding: const EdgeInsets.fromLTRB(16, 40, 16, 16), // Increased top padding
       decoration: BoxDecoration(
         color: primaryColor,
         boxShadow: [
@@ -96,30 +116,7 @@ class _RiwayatPageState extends State<RiwayatPage> {
         ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Time and battery status row (like in the example image)
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                '21.31',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.white,
-                ),
-              ),
-              const Text(
-                '100%',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.white,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          // Title row
           Row(
             children: [
               GestureDetector(
@@ -128,7 +125,7 @@ class _RiwayatPageState extends State<RiwayatPage> {
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(30),
                   ),
                   child: const Icon(
                     Icons.arrow_back_rounded,
@@ -141,37 +138,14 @@ class _RiwayatPageState extends State<RiwayatPage> {
               const Text(
                 'Riwayat',
                 style: TextStyle(
-                  fontSize: 22,
+                  fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
-                  letterSpacing: 0.5,
                 ),
               ),
               const Spacer(),
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Icon(
-                  Icons.search_rounded,
-                  color: Colors.white,
-                  size: 22,
-                ),
-              ),
             ],
           ),
-          const SizedBox(height: 16),
-          const Text(
-            'Aktivitas Terakhir',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: Colors.white,
-            ),
-          ),
-          const SizedBox(height: 8),
         ],
       ),
     );
@@ -192,6 +166,7 @@ class _RiwayatPageState extends State<RiwayatPage> {
             onTap: () {
               setState(() {
                 _selectedFilter = option;
+                _applyFilter(option);
               });
             },
             child: Container(
@@ -229,6 +204,41 @@ class _RiwayatPageState extends State<RiwayatPage> {
         },
       ),
     );
+  }
+
+  void _applyFilter(String filter) {
+    if (filter == 'Semua') {
+      setState(() {
+        _filteredRiwayatData = _allRiwayatData;
+      });
+      return;
+    }
+
+    String statusFilter = '';
+    switch (filter) {
+      case 'Hadir':
+        statusFilter = 'present';
+        break;
+      case 'Izin':
+        statusFilter = 'late';
+        break;
+      case 'Absen':
+        statusFilter = 'absent';
+        break;
+      case 'Ekskul':
+        statusFilter = 'approved';
+        break;
+    }
+
+    setState(() {
+      _filteredRiwayatData = _allRiwayatData.where((item) {
+        if (filter == 'Ekskul') {
+          return item['type'] == 'ekskul';
+        } else {
+          return item['status'] == statusFilter;
+        }
+      }).toList();
+    });
   }
 
   Widget _buildStatisticsCard() {
@@ -341,12 +351,35 @@ class _RiwayatPageState extends State<RiwayatPage> {
   }
 
   Widget _buildHistoryList() {
+    if (_filteredRiwayatData.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.history_rounded,
+              size: 60,
+              color: Colors.grey.shade400,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Tidak ada data riwayat',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey.shade600,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
     return ListView.builder(
       physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      itemCount: _riwayatData.length,
+      itemCount: _filteredRiwayatData.length,
       itemBuilder: (context, index) {
-        final item = _riwayatData[index];
+        final item = _filteredRiwayatData[index];
         
         return Container(
           margin: const EdgeInsets.only(bottom: 16),
@@ -367,7 +400,6 @@ class _RiwayatPageState extends State<RiwayatPage> {
             child: InkWell(
               borderRadius: BorderRadius.circular(20),
               onTap: () {
-                // Show detail when item is tapped
                 _showDetailDialog(context, item);
               },
               child: Padding(

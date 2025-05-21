@@ -17,8 +17,8 @@ class _AbsensiPageState extends State<AbsensiPage> {
 
   String metode = 'manual';
 
-  // Warna untuk UI yang sesuai dengan HomePage
-  final Color primaryColor = const Color(0xFF0059AA);
+  // Brightened primary color for better contrast
+  final Color primaryColor = const Color(0xFF0071D1); // Brightened from 0xFF0059AA
   final Color accentColor = const Color(0xFF2962FF);
   final Color backgroundColor = const Color(0xFFF8FAFF);
 
@@ -28,10 +28,10 @@ class _AbsensiPageState extends State<AbsensiPage> {
       backgroundColor: backgroundColor,
       body: Column(
         children: [
-          // HEADER
+          // HEADER - Brightened and improved
           Container(
             padding:
-                const EdgeInsets.only(left: 20, right: 20, top: 40, bottom: 15),
+                const EdgeInsets.only(left: 4, right: 20, top: 40, bottom: 10),
             decoration: BoxDecoration(
               color: primaryColor,
               borderRadius: const BorderRadius.only(
@@ -48,18 +48,23 @@ class _AbsensiPageState extends State<AbsensiPage> {
             ),
             child: Row(
               children: [
-                IconButton(
-                  icon: const Icon(Icons.arrow_back_ios_rounded, color: Colors.white),
-                  onPressed: () => Navigator.pop(context),
-                ),
-                const Text(
-                  "XtraSchool",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 22,
-                    letterSpacing: 0.5,
+                // Back button with reduced padding
+                Padding(
+                  padding: const EdgeInsets.only(right: 5),
+                  child: IconButton(
+                    icon: const Icon(Icons.arrow_back_ios_rounded, color: Colors.white),
+                    onPressed: () => Navigator.pop(context),
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                    iconSize: 22,
                   ),
+                ),
+                // Logo image with appropriate size and better contrast
+                Image.asset(
+                  'assets/images/logo2.png',
+                  width: 150,
+                  height: 40,
+                  color: Colors.white, // Added to improve logo visibility
                 ),
               ],
             ),
@@ -71,8 +76,8 @@ class _AbsensiPageState extends State<AbsensiPage> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               children: [
                 const SizedBox(height: 20),
-                _buildSectionTitle("Kehadiran Ekstrakurikuler"),
-                const SizedBox(height: 20),
+                // Removed "Kehadiran Ekstrakurikuler" title here
+                const SizedBox(height: 10),
                 _buildMetodeSelector(),
                 const SizedBox(height: 20),
                 if (metode == 'manual') _buildForm() else _buildQrPlaceholder(),
@@ -102,7 +107,7 @@ class _AbsensiPageState extends State<AbsensiPage> {
           title,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 18,
+            fontSize: 16,
             color: Color(0xFF333333),
           ),
         ),

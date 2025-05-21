@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'detail_profil.dart' as detail; // Import with prefix
 import 'edit_profil.dart' as edit;     // Import with prefix
 import 'riwayat_page.dart' as riwayat; // Add this import with prefix
+// Tambahkan import ini di bagian atas file
+import 'prestasisaya.dart' as prestasi; // Tambahkan import dengan prefix
 
 /// Halaman Kontak yang menampilkan informasi profil siswa serta
 /// menu navigasi tindakan yang relevan.
@@ -277,7 +279,15 @@ class _KontakPageState extends State<KontakPage> {
           _buildMenuItem(
             icon: Icons.emoji_events_rounded, 
             title: 'Prestasi Saya', 
-            onTap: () {},
+            onTap: () {
+              // Navigasi ke halaman prestasi
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => prestasi.AchievementPage()
+                ),
+              );
+            },
             colorKey: 'prestasi',
           ),
           _buildMenuItem(

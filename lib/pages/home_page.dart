@@ -36,37 +36,65 @@ class HomePage extends StatelessWidget {
             child: Column(
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'XtraSchool',
-                      style: TextStyle(
-                        color: Colors.white, fontSize: 24, fontWeight: FontWeight.w800),
+                    // Logo image instead of text
+                    Image.asset(
+                      'assets/images/logo2.png',
+                      height: 44,
+                      fit: BoxFit.contain,
+                      color: Colors.white,
                     ),
-                    const Spacer(),
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(12),
+                    // Notification icon with improved styling
+                    GestureDetector(
+                      onTap: () {
+                        // Navigate to notification page
+                        Navigator.of(context).pushNamed('/notifikasi');
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.25),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Icon(
+                          Icons.notifications_outlined,
+                          color: Colors.white, 
+                          size: 24
+                        ),
                       ),
-                      child: const Icon(Icons.mail_outline_rounded,
-                          color: Colors.white, size: 24),
                     ),
                   ],
                 ),
                 const SizedBox(height: 20),
+                // Improved search bar
                 Container(
                   height: 50,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(15),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 10,
+                        offset: const Offset(0, 3)
+                      )
+                    ]
                   ),
-                  child: const TextField(
+                  child: TextField(
                     decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.search_rounded, color: Color(0xFF9AA0AA)),
+                      prefixIcon: const Icon(
+                        Icons.search_rounded, 
+                        color: Color(0xFF9AA0AA),
+                        size: 22,
+                      ),
                       hintText: 'Cari kegiatan ekstrakulikuler…',
+                      hintStyle: TextStyle(
+                        color: const Color(0xFF9AA0AA).withOpacity(0.8),
+                        fontSize: 14,
+                      ),
                       border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(vertical: 15),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 15),
                     ),
                   ),
                 ),
@@ -91,14 +119,24 @@ class HomePage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         _buildFeatureIcon(Icons.calendar_month_rounded, 'Jadwal',
-                            const Color(0xFF4E6CEF), () {}),
+                            const Color(0xFF4E6CEF), () {
+                          // Navigasi ke halaman JadwalPage.dart
+                          Navigator.of(context).pushNamed('/jadwal');
+                          // Note: Make sure '/jadwal' route is registered with JadwalPage in your routes configuration
+                        }),
                         _buildFeatureIcon(Icons.assignment_rounded, 'Pendaftaran',
-                            const Color(0xFF3F8CFF), () {}),
+                            const Color(0xFF3F8CFF), () {
+                          // Navigasi ke halaman Pendaftaran
+                          Navigator.pushNamed(context, '/daftar');
+                        }),
                         _buildFeatureIcon(Icons.emoji_events_rounded, 'Prestasi',
-                            const Color(0xFF5E56FF), () {}),
+                            const Color(0xFF5E56FF), () {
+                          // Navigasi ke halaman Prestasi
+                          Navigator.pushNamed(context, '/prestasi');
+                        }),
                         _buildFeatureIcon(Icons.check_circle_rounded, 'Kehadiran',
                             const Color(0xFF3F51B5), () {
-                          // contoh navigate ke Absensi
+                          // Navigasi ke halaman Absensi
                           Navigator.pushNamed(context, '/absensi');
                         }),
                       ],
@@ -186,17 +224,21 @@ class HomePage extends StatelessWidget {
 
   Widget _buildFeatureIcon(
       IconData icon, String label, Color color, VoidCallback onTap) {
-    return GestureDetector(
+    return InkWell(  // Changed from GestureDetector to InkWell for better feedback
       onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
       child: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: color.withOpacity(.15),
-              borderRadius: BorderRadius.circular(12),
+          Hero(  // Added Hero widget for smooth transition
+            tag: 'menu_icon_$label',
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: color.withOpacity(.15),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(icon, color: color, size: 26),
             ),
-            child: Icon(icon, color: color, size: 26),
           ),
           const SizedBox(height: 8),
           Text(label,
