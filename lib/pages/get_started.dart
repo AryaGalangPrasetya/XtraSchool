@@ -78,15 +78,13 @@ class _GetStartedPageState extends State<GetStartedPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(width: 60),
-                    const Text(
-                      "EKSTRA SCHOOL",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 1.2,
-                      ),
-                    ),
+                     // Logo image with appropriate size and better contrast
+                Image.asset(
+                  'assets/images/logo2.png',
+                  width: 150,
+                  height: 40,
+                  color: Colors.white, // Added to improve logo visibility
+                ),
                     TextButton(
                       onPressed: () {
                         Navigator.pushReplacement(

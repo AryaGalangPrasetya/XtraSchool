@@ -26,7 +26,7 @@ class _KontakPageState extends State<KontakPage> {
   String userName = "Galang";
   String userEmail = "galang@xtraschool.id";
   final String userClass = "XRPL A";
-  final String userSchool = "SMKB 4 Malang";
+  final String userSchool = "SMK 4 Malang";
 
   // Data profil lengkap untuk digunakan oleh DetailProfil dan EditProfil
   Map<String, String> _profileData = {
